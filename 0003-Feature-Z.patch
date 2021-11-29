@@ -1,0 +1,24 @@
+From 9df867a80bafe9eb90ac320669ee134e94dc446c Mon Sep 17 00:00:00 2001
+From: Aslak Knutsen <aslak@4fs.no>
+Date: Mon, 29 Nov 2021 19:45:50 +0100
+Subject: [PATCH 3/3] Feature Z
+
+---
+ README.md | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/README.md b/README.md
+index 34b10c5..68a5ae4 100644
+--- a/README.md
++++ b/README.md
+@@ -1,5 +1,7 @@
+ # sync-test
+ 
++Add 0 line
++
+ Add 1 line
+ 
+ Add 2 line
+-- 
+2.31.1
+
