@@ -1,0 +1,44 @@
+name: sync-with-upstream
+on: workflow_dispatch
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    env:
+      TARGET_REPO: aslakknutsen/sync-test
+      TARGET_BRANCH: main_downstream
+      TARGET_DIR: target
+
+      SOURCE_REPO: aslakknutsen/sync-test
+      SOURCE_BRANCH: main_upstream
+      SOURCE_DIR: source
+
+      PATCH_ID: ${{ github.run_number }}
+      PATCH_REPO: aslakknutsen/sync-test
+      PATCH_BRANCH: patches
+      PATCH_DIR: patches
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
+        with:
+          repository: ${{ env.TARGET_REPO }}
+          token: ${{ secrets.TOKEN }}
+          path: ${{ env.TARGET_DIR }}
+          ref: ${{ env.TARGET_BRANCH }}
+          fetch-depth: 0
+      - uses: actions/checkout@v2
+        with:
+          repository: ${{ env.SOURCE_REPO }}
+          token: ${{ secrets.TOKEN }}
+          path: ${{ env.SOURCE_DIR }}
+          ref: ${{ env.SOURCE_BRANCH }}
+          fetch-depth: 0
+      - uses: actions/checkout@v2
+        with:
+          repository: ${{ env.PATCH_REPO }}
+          token: ${{ secrets.TOKEN }}
+          path: ${{ env.PATCH_DIR }}
+          ref: ${{ env.PATCH_BRANCH }}
+          fetch-depth: 0
+      - run: git config --global user.email "aslak@4fs.no" && git config --global user.name "Aslak Knutsen"
+      - run: ./scripts/sync.sh
