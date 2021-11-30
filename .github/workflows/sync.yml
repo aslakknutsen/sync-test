@@ -42,3 +42,9 @@ jobs:
           fetch-depth: 0
       - run: git config --global user.email "aslak@4fs.no" && git config --global user.name "Aslak Knutsen"
       - run: ./scripts/sync.sh
+      - uses: JasonEtco/create-an-issue@v2
+        if: ${{ env.ERROR_FILE != '' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+        with:
+          filename: ${{ env.ERROR_FILE }}

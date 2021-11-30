@@ -40,14 +40,24 @@ do
         err_diff=$(git am --show-current-patch=diff)
         git push origin patch_update_${ID}
 
-        cat << EndOfMessage
-Failed to update ${patch} on ${MAIN_REF}
+        error_file=error.txt
+
+        cat > ../${error_file} << EndOfMessage
+---
+title: Failed to apply patchset on upstream master ${MAIN_REF}
+labels: bug
+---
+Failed to apply ${patch} on ${MAIN_REF}
 
 Message:
+\`\`\`
 ${apply_status}
+\`\`\`
 
 Diff:
+\`\`\`diff
 ${err_diff}
+\`\`\`
 
 To recreate:
 git checkout ${TARGET_REPO} patch_update_${ID} && git apply ${patch}
@@ -55,7 +65,9 @@ git checkout ${TARGET_REPO} patch_update_${ID} && git apply ${patch}
 Fix conflict, commit and push to patch_update_${ID}
 EndOfMessage
 
-        exit -50
+        echo "ERROR_FILE=${error_file}" >> ${GITHUB_ENV}
+
+        exit 0
     fi
 done
 
